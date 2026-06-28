@@ -13,7 +13,10 @@ const seedDatabase = async () => {
 
   const defaultAdminEmail = process.env.ADMIN_EMAIL || 'admin@marketplace.com';
   const defaultAdminPassword = process.env.ADMIN_PASSWORD || 'Admin123';
+  const defaultCustomerEmail = process.env.CUSTOMER_EMAIL || 'customer@marketplace.com';
+  const defaultCustomerPassword = process.env.CUSTOMER_PASSWORD || 'Customer123';
   const existingAdmin = await User.findOne({ where: { email: defaultAdminEmail } });
+  const existingCustomer = await User.findOne({ where: { email: defaultCustomerEmail } });
 
   if (!existingAdmin) {
     await User.create({
@@ -21,6 +24,15 @@ const seedDatabase = async () => {
       email: defaultAdminEmail,
       password: await bcrypt.hash(defaultAdminPassword, 10),
       RoleId: adminRole.id
+    });
+  }
+
+  if (!existingCustomer) {
+    await User.create({
+      nombre: 'Cliente',
+      email: defaultCustomerEmail,
+      password: await bcrypt.hash(defaultCustomerPassword, 10),
+      RoleId: customerRole.id
     });
   }
 
